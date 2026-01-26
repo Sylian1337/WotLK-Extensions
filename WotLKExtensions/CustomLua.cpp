@@ -420,7 +420,7 @@ int CustomLua::GetCustomCombatRatingBonus(lua_State* L)
 
 int CustomLua::GetAvailableRoles(lua_State* L)
 {
-	ChrClassesRow* row = (ChrClassesRow*)ClientDB::GetRow((void*)(0xAD341C), sub_6B1080());
+	ChrClassesRow* row = (ChrClassesRow*)ClientDB::GetRow((void*)(0xAD341C), ClientServices::GetCharacterClass());
 	uint32_t classId = 0;
 	LFGRolesRow* cdbcRole = 0;
 
@@ -437,7 +437,7 @@ int CustomLua::GetAvailableRoles(lua_State* L)
 
 int CustomLua::SetLFGRole(lua_State* L)
 {
-	ChrClassesRow* row = (ChrClassesRow*)ClientDB::GetRow((void*)0xAD341C, sub_6B1080());
+	ChrClassesRow* row = (ChrClassesRow*)ClientDB::GetRow((void*)0xAD341C, ClientServices::GetCharacterClass());
 	LFGRolesRow* cdbcRole = 0;
 	uint32_t roles = FrameScript::GetParam(L, 1, 0) != 0;
 	uint32_t classId = 0;
@@ -500,6 +500,40 @@ int CustomLua::PortGraveyard(lua_State* L)
 	return 0;
 }
 
+int CustomLua::SendExamplePacket(lua_State* L)
+{
+	// Optional: Get parameters from Lua if you want
+	// Example: Get a message string from Lua argument
+	char* customMessage = "";
+	int32_t customNumber = 100;
+
+	if (FrameScript::GetTop(L, 1) >= 1 && FrameScript::IsString(L, 1))
+	{
+		customMessage = FrameScript::ToLString(L, 1, 0);
+	}
+
+	if (FrameScript::GetTop(L, 2) >= 2 && FrameScript::IsNumber(L, 2))
+	{
+		customNumber = (int32_t)FrameScript::GetNumber(L, 2);
+	}
+
+	// Create and send packet
+	CDataStore pkt;
+	CDataStore_C::GenPacket(&pkt);
+
+	// Write the CMSG opcode
+	CDataStore_C::PutInt32(&pkt, CMSG_EXAMPLE_PACKET);
+
+	// Write the custom data
+	CDataStore_C::PutCString(&pkt, customMessage);
+	CDataStore_C::PutInt32(&pkt, customNumber);
+	pkt.m_read = 0;
+	ClientServices::SendPacket(&pkt);
+	CDataStore_C::Release(&pkt);
+
+	return 0;
+}
+
 void CustomLua::AddToFunctionMap(char* name, void* ptr)
 {
 	luaFuncts.insert(std::make_pair(name, ptr));
@@ -541,5 +575,6 @@ void CustomLua::RegisterFunctions()
 		AddToFunctionMap("GetCustomCombatRating", &GetCustomCombatRating);
 		AddToFunctionMap("GetCustomCombatRatingBonus", &GetCustomCombatRatingBonus);
 		AddToFunctionMap("PortGraveyard", &PortGraveyard);
+		AddToFunctionMap("SendCustomPacket", &SendExamplePacket);
 	}
 }

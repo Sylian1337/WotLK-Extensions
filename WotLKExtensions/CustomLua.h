@@ -42,5 +42,7 @@ private:
 
 	static int PortGraveyard(lua_State* L);
 
+	static int SendExamplePacket(lua_State* L);
+
 	friend class Main;
 };
