@@ -165,6 +165,64 @@ struct SpellRow
 	uint32_t padding0x230[30];
 };
 
+struct SpellVisualRec
+{
+	int32_t m_ID;
+	int32_t m_precastKit;
+	int32_t m_castKit;
+	int32_t m_impactKit;
+	int32_t m_stateKit;
+	int32_t m_stateDoneKit;
+	int32_t m_channelKit;
+	int32_t m_hasMissile;
+	int32_t m_missileModel;
+	int32_t m_missilePathType;
+	int32_t m_missileDestinationAttachment;
+	int32_t m_missileSound;
+	int32_t m_animEventSoundID;
+	int32_t m_flags;
+	int32_t m_casterImpactKit;
+	int32_t m_targetImpactKit;
+	int32_t m_missileAttachment;
+	int32_t m_missileFollowGroundHeight;
+	int32_t m_missileFollowGroundDropSpeed;
+	int32_t m_missileFollowGroundApproach;
+	int32_t m_missileFollowGroundFlags;
+	int32_t m_missileMotion;
+	int32_t m_missileTargetingKit;
+	int32_t m_instantAreaKit;
+	int32_t m_impactAreaKit;
+	int32_t m_persistentAreaKit;
+	float m_missileCastOffset[3];
+	float m_missileImpactOffset[3];
+};
+
+struct SpellVisualKitRec
+{
+	int32_t m_ID;
+	int32_t m_startAnimID;
+	int32_t m_animID;
+	int32_t m_headEffect;
+	int32_t m_chestEffect;
+	int32_t m_baseEffect;
+	int32_t m_leftHandEffect;
+	int32_t m_rightHandEffect;
+	int32_t m_breathEffect;
+	int32_t m_leftWeaponEffect;
+	int32_t m_rightWeaponEffect;
+	int32_t m_specialEffect[3];
+	int32_t m_worldEffect;
+	int32_t m_soundID;
+	int32_t m_shakeID;
+	int32_t m_charProc[4];
+	float m_charParamZero[4];
+	float m_charParamOne[4];
+	float m_charParamTwo[4];
+	float m_charParamThree[4];
+	int32_t m_flags;
+};
+
+
 // Aleist3r: afaik it's not a full structure but I don't need the rest defined
 struct WoWTime
 {
