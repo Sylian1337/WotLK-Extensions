@@ -6,6 +6,29 @@ set_property(TARGET WotLKExtensions PROPERTY CXX_STANDARD 17)
 
 set_property(TARGET WotLKExtensions PROPERTY USE_FOLDERS true)
 
+# --- ADD THIS SECTION FOR VISUAL STUDIO FOLDERS ---
+# Create filters based on actual directory structure
+foreach(source IN LISTS WOTLK_EXTENSIONS_SOURCES)
+    # Get the relative path from CMAKE_CURRENT_SOURCE_DIR
+    file(RELATIVE_PATH relative_path "${CMAKE_CURRENT_SOURCE_DIR}" "${source}")
+    
+    # Get directory part (for filter grouping)
+    get_filename_component(source_dir "${relative_path}" DIRECTORY)
+    
+    # Convert directory separators to Visual Studio filter separators
+    if(source_dir)
+        string(REPLACE "/" "\\" vs_filter "${source_dir}")
+        source_group("${vs_filter}" FILES "${source}")
+    else()
+        # Files in root go to root filter
+        source_group("" FILES "${source}")
+    endif()
+endforeach()
+
+target_include_directories(WotLKExtensions PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
 set(LOG_LEVELS DEBUG INFO WARN ERROR NONE)
 set(LOG_LEVEL DEBUG CACHE STRING "Logging level")
 set_property(CACHE LOG_LEVEL PROPERTY STRINGS ${LOG_LEVELS})
@@ -23,4 +46,3 @@ elseif(LOG_LEVEL STREQUAL "NONE")
 else()
     message(FATAL_ERROR "Invalid LOG_LEVEL ${LOG_LEVEL}")
 endif()
-

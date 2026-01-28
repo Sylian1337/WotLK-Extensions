@@ -235,7 +235,7 @@ void CustomPacket::Send_CMSG_CUSTOM_SYLIAN_PACKET()
     CDataStore_C::GenPacket(&pkt);
 
     // Write the CMSG opcode (int32!)
-    CDataStore_C::PutInt32(&pkt, CMSG_CUSTOM_SYLIAN_PACKET);
+    CDataStore_C::PutInt32(&pkt, CMSG_EXAMPLE_PACKET);
 
     // Reset read pointer (important for SendPacket)
     pkt.m_read = 0;
