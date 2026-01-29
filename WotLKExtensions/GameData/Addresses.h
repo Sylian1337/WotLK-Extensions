@@ -260,18 +260,26 @@ namespace DBCAddresses
 	constexpr uintptr_t ZONEMUSICDB = 0x00AD4FB8;
 }
 
-
 namespace FuncAddresses {
+
+# pragma region Client-Manager
+
+	constexpr uintptr_t INITIALIZE_PLAYER = 0x6E83B0;
+	constexpr uintptr_t GET_ACTIVE_PLAYER = 0x4D3790;
+	constexpr uintptr_t GET_OBJECT_PTR = 0x4D4DB0;
+
+# pragma endregion
+
 
 
 	// Functions
 	constexpr uintptr_t GET_SPELL_VISUAL_ROW = 0x007FA290;
 	constexpr uintptr_t GET_LOCALIZED_ROW = 0x4CFD20;
 	constexpr uintptr_t GET_ROW = 0x65C290;
+	constexpr uintptr_t GET_GAME_TABLE_VALUE = 0x7F6990;
 
 	// Client functions
 	constexpr uintptr_t PROCESS_MESSAGE = 0x631FE0;
 	constexpr uintptr_t SET_MESSAGE_HANDLER = 0x631FA0;
-	// ... add more as you find them
 }
 

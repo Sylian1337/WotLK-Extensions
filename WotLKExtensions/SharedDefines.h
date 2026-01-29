@@ -284,9 +284,9 @@ namespace CGUnit_C
 namespace ClientDB
 {
 	CLIENT_FUNCTION(GetSpellVisualRow, FuncAddresses::GET_SPELL_VISUAL_ROW, __cdecl, SpellVisualRec*, (void*))
-	CLIENT_FUNCTION(GetLocalizedRow, 0x4CFD20, __thiscall, int, (void*, uint32_t, void*))
-	CLIENT_FUNCTION(GetRow, 0x65C290, __thiscall, void*, (void*, uint32_t))
-	CLIENT_FUNCTION(GetGameTableValue, 0x7F6990, __cdecl, double, (uint32_t, uint32_t, uint32_t)) // this technically is not a part of ClientDB iirc but who cares
+	CLIENT_FUNCTION(GetLocalizedRow, FuncAddresses::GET_LOCALIZED_ROW, __thiscall, int, (void*, uint32_t, void*))
+	CLIENT_FUNCTION(GetRow, FuncAddresses::GET_ROW, __thiscall, void*, (void*, uint32_t))
+	CLIENT_FUNCTION(GetGameTableValue, FuncAddresses::GET_GAME_TABLE_VALUE, __cdecl, double, (uint32_t, uint32_t, uint32_t)) // this technically is not a part of ClientDB iirc but who cares
 }
 
 namespace ClientPacket
@@ -296,15 +296,15 @@ namespace ClientPacket
 
 namespace ClientServices
 {
-	CLIENT_FUNCTION(InitializePlayer, 0x6E83B0, __cdecl, void, ())
-	CLIENT_FUNCTION(SendPacket, 0x6B0B50, __cdecl, void, (CDataStore*))
+	CLIENT_FUNCTION(InitializePlayer, FuncAddresses::INITIALIZE_PLAYER, __cdecl, void, ())
+	CLIENT_FUNCTION(SendPacket, FuncAddresses::GET_ACTIVE_PLAYER, __cdecl, void, (CDataStore*))
 	CLIENT_FUNCTION(GetCharacterClass, 0x6B1080, __cdecl, uint8_t, ())
 }
 
 namespace ClntObjMgr
 {
-	CLIENT_FUNCTION(GetActivePlayer, 0x4D3790, __cdecl, uint64_t, ())
-	CLIENT_FUNCTION(ObjectPtr, 0x4D4DB0, __cdecl, void*, (uint64_t, uint32_t))
+	CLIENT_FUNCTION(GetActivePlayer, FuncAddresses::GET_ACTIVE_PLAYER, __cdecl, uint64_t, ())
+	CLIENT_FUNCTION(ObjectPtr, FuncAddresses::GET_OBJECT_PTR, __cdecl, void*, (uint64_t, uint32_t))
 }
 
 namespace CNetClient

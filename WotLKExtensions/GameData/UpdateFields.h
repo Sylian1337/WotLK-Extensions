@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 
 
 enum EUnitFlags : uint32_t {

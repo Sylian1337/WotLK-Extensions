@@ -44,5 +44,7 @@ private:
 
 	static int SendExamplePacket(lua_State* L);
 
+	static int GetLocalPlayer(lua_State* L);
+
 	friend class Main;
 };

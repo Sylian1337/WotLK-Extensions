@@ -534,6 +534,28 @@ int CustomLua::SendExamplePacket(lua_State* L)
 	return 0;
 }
 
+int CustomLua::GetLocalPlayer(lua_State* L) {
+	uint64_t playerGUID = ClntObjMgr::GetActivePlayer();
+
+	if (playerGUID) {
+		// Get the ACTUAL memory address of the player object
+		void* playerAddress = ClntObjMgr::ObjectPtr(playerGUID, TYPEMASK_PLAYER);
+
+		char buffer[512];
+		SStr::Printf(buffer, 512,
+			"GUID: 0x%llX (dec: %llu)\n"
+			"Address: 0x%p",
+			playerGUID, playerGUID, playerAddress);
+
+		CGChat::AddChatMessage(buffer, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+	}
+	else {
+		CGChat::AddChatMessage("No active player found!", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+	}
+
+	return 0;
+}
+
 void CustomLua::AddToFunctionMap(char* name, void* ptr)
 {
 	luaFuncts.insert(std::make_pair(name, ptr));
@@ -568,6 +590,7 @@ void CustomLua::RegisterFunctions()
 		AddToFunctionMap("ToggleTerrainCulling", &ToggleTerrainCulling);
 		AddToFunctionMap("ToggleWireframeMode", &ToggleWireframeMode);
 		AddToFunctionMap("ToggleWMO", &ToggleWMO);
+		AddToFunctionMap("GetLocalPlayer", &GetLocalPlayer);
 	}
 
 	if (customPackets)
