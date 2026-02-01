@@ -269,3 +269,53 @@ namespace DBGloabls
 		return (T*)((uintptr_t)(*db) + (id * sizeof(T)));
 	}
 }
+
+
+
+namespace AchievementDBC {
+
+	struct AchievementRec
+	{
+		int32_t m_ID;
+		int32_t m_faction;
+		int32_t m_instanceID;
+		int32_t m_supercedes;
+		const char* m_title;
+		const char* m_description;
+		int32_t m_category;
+		int32_t m_points;
+		int32_t m_uiOrder;
+		int32_t m_flags;
+		int32_t m_iconID;
+		const char* m_reward;
+		int32_t m_minimumCriteria;
+		int32_t m_sharesCriteria;
+	};
+
+	struct Achievement_CategoryRec
+	{
+		int32_t m_ID;
+		int32_t m_parent;
+		const char* m_name;
+		int32_t m_uiOrder;
+	};
+
+	struct Achievement_CriteriaRec
+	{
+		int32_t m_ID;
+		int32_t m_achievementID;
+		int32_t m_type;
+		int32_t m_assetID;
+		int32_t m_quantity;
+		int32_t m_startEvent;
+		int32_t m_startAsset;
+		int32_t m_failEvent;
+		int32_t m_failAsset;
+		const char* m_description;
+		int32_t m_flags;
+		int32_t m_timerStartEvent;
+		int32_t m_timerAssetID;
+		int32_t m_timerTime;
+		int32_t m_uiOrder;
+	};
+}
