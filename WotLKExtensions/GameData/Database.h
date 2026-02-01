@@ -270,9 +270,10 @@ namespace DBGloabls
 	}
 }
 
+// ------------------------------------------------------- //
+// Below are all the Record Structs for DBCs. //
 
-
-namespace AchievementDBC {
+namespace AchievementDBC_Rec {
 
 	struct AchievementRec
 	{
@@ -318,4 +319,98 @@ namespace AchievementDBC {
 		int32_t m_timerTime;
 		int32_t m_uiOrder;
 	};
+}
+
+namespace AnimationDBC_Rec {
+
+	struct AnimKitRec
+	{
+		int32_t m_ID;
+		int32_t m_oneShotDuration;
+		int32_t m_oneShotStopAnimKitID;
+	};
+
+	struct AnimKitBoneSetRec
+	{
+		int32_t m_ID;
+		const char* m_name;
+		int32_t m_boneDataID;
+		int32_t m_parentAnimKitBoneSetID;
+		int32_t m_extraBoneCount;
+		int32_t m_altAnimKitBoneSetID;
+	};
+
+	struct AnimKitBoneSetAliasRec
+	{
+		int32_t m_ID;
+		int32_t m_boneDataID;
+		int32_t m_animKitBoneSetID;
+	};
+
+	struct AnimKitConfigRec
+	{
+		int32_t m_ID;
+		int32_t m_configFlags;
+	};
+
+	struct AnimKitConfigBoneSetRec
+	{
+		int32_t m_ID;
+		int32_t m_parentAnimKitConfigID;
+		int32_t m_animKitBoneSetID;
+		int32_t m_animKitPriorityID;
+	};
+
+	struct AnimKitPriorityRec
+	{
+		int32_t m_ID;
+		int32_t m_priority;
+	};
+
+	struct AnimKitSegmentRec
+	{
+		int32_t m_ID;
+		int32_t m_parentAnimKitID;
+		int32_t m_animID;
+		int32_t m_animStartTime;
+		int32_t m_animKitConfigID;
+		int32_t m_startCondition;
+		int32_t m_startConditionParam;
+		int32_t m_startConditionDelay;
+		int32_t m_endCondition;
+		int32_t m_endConditionParam;
+		int32_t m_endConditionDelay;
+		float m_speed;
+		int32_t m_segmentFlags;
+		int32_t m_forcedVariation;
+		int32_t m_overrideConfigFlags;
+		int32_t m_loopToSegmentIndex;
+	};
+
+	struct AnimReplacementRec
+	{
+		int32_t m_ID;
+		int32_t m_srcAnimID;
+		int32_t m_dstAnimID;
+		int32_t m_parentAnimReplacementSetID;
+	};
+
+	struct AnimReplacementSetRec
+	{
+		int32_t m_ID;
+		int32_t m_execOrder;
+	};
+
+	struct AnimationDataRec
+	{
+		int32_t m_ID;
+		const char* m_name;
+		int32_t m_weaponflags;
+		int32_t m_bodyflags;
+		int32_t m_flags;
+		int32_t m_fallback;
+		int32_t m_behaviorID;
+		int32_t m_behaviorTier;
+	};
+
 }
