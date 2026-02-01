@@ -1,6 +1,7 @@
 #include "CustomLua.h"
 #include "Player.h"
 #include "CDBCMgr/CDBCDefs/LFGRoles.h"
+#include "GameObjects/CGObject.h"
 
 void CustomLua::Apply()
 {
@@ -538,14 +539,18 @@ int CustomLua::GetLocalPlayer(lua_State* L) {
 	uint64_t playerGUID = ClntObjMgr::GetActivePlayer();
 
 	if (playerGUID) {
-		// Get the ACTUAL memory address of the player object
-		void* playerAddress = ClntObjMgr::ObjectPtr(playerGUID, TYPEMASK_PLAYER);
+		
+		void* playerAddr = ClntObjMgr::ObjectPtr(playerGUID, TYPEMASK_PLAYER);
+
+		CGObject obj(playerAddr);
 
 		char buffer[512];
 		SStr::Printf(buffer, 512,
-			"GUID: 0x%llX (dec: %llu)\n"
-			"Address: 0x%p",
-			playerGUID, playerGUID, playerAddress);
+			"Health: %u/%u, Money: %u, Pos: (%.1f, %.1f, %.1f)",
+			obj.m_rawObject->UnitHealth,
+			obj.m_rawObject->UnitMaxHealth,
+			obj.m_rawObject->PlayerMoney,
+			obj.GetX(), obj.GetY(), obj.GetZ());
 
 		CGChat::AddChatMessage(buffer, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 	}

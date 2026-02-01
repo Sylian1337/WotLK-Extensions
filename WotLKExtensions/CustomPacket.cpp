@@ -156,7 +156,7 @@ void __fastcall CustomPacket::ProcessMessageEx(
 
                 Mark packet as read so it doesn't break the stream.
             */
-            ((void(*__thiscall)(CDataStore*))a3->vTable->IsRead)(a3);
+            ((void(*__thiscall)(CDataStore*))a3->vTable->fn_IsRead)(a3);
         }
     }
 }
