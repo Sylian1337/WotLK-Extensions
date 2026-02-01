@@ -271,7 +271,6 @@ namespace FuncAddresses {
 # pragma endregion
 
 
-
 	// Functions
 	constexpr uintptr_t GET_SPELL_VISUAL_ROW = 0x007FA290;
 	constexpr uintptr_t GET_LOCALIZED_ROW = 0x4CFD20;
@@ -283,3 +282,8 @@ namespace FuncAddresses {
 	constexpr uintptr_t SET_MESSAGE_HANDLER = 0x631FA0;
 }
 
+namespace CGPlayer_Vitrual_Functions {
+
+	constexpr uintptr_t CGPLAYER_IS_DEAD_OR_GHOST = 0x6DAC10;
+
+}

@@ -284,7 +284,7 @@ namespace CGChat
 
 namespace CGPlayer_C
 {
-	CLIENT_FUNCTION(IsDeadOrGhost, 0x6DAC10, __thiscall, bool, (CGPlayer*))
+	CLIENT_FUNCTION(IsDeadOrGhost, CGPlayer_Vitrual_Functions::CGPLAYER_IS_DEAD_OR_GHOST, __thiscall, bool, (CGPlayer*))
 }
 
 namespace CGUnit_C
