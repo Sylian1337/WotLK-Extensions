@@ -1,5 +1,6 @@
 #include "CustomLua.h"
 #include "Player.h"
+#include "GameData/Database.h"
 #include "CDBCMgr/CDBCDefs/LFGRoles.h"
 #include "GameObjects/CGObject.h"
 
@@ -536,21 +537,36 @@ int CustomLua::SendExamplePacket(lua_State* L)
 }
 
 int CustomLua::GetLocalPlayer(lua_State* L) {
+
 	uint64_t playerGUID = ClntObjMgr::GetActivePlayer();
 
 	if (playerGUID) {
 		
+
 		void* playerAddr = ClntObjMgr::ObjectPtr(playerGUID, TYPEMASK_PLAYER);
 
 		CGObject obj(playerAddr);
 
 		char buffer[512];
 		SStr::Printf(buffer, 512,
-			"Health: %u/%u, Money: %u, Pos: (%.1f, %.1f, %.1f)",
+			"Player Address -> %p",
+			playerAddr);
+
+		/*
+		char buffer[512];
+		SStr::Printf(buffer, 512,
+			"Health: %u/%u, Money: %u, Pos: (%.1f, %.1f, %.1f), Target Health: %d",
 			obj.m_rawObject->UnitHealth,
 			obj.m_rawObject->UnitMaxHealth,
 			obj.m_rawObject->PlayerMoney,
 			obj.GetX(), obj.GetY(), obj.GetZ());
+		*/
+		// Just pass a pointer to the display ID integer
+		
+		//uint32_t displayIdPtr = 51719;
+
+		// Slot 0 = head, 1 = shoulders, etc.
+		//CGPlayer_C::EquipVisibleItem(target, &displayIdPtr, 0);
 
 		CGChat::AddChatMessage(buffer, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 	}
@@ -560,6 +576,170 @@ int CustomLua::GetLocalPlayer(lua_State* L) {
 
 	return 0;
 }
+
+int CustomLua::HotReloadSpellDBC(lua_State* L) {
+	// Addresses
+	const uintptr_t DBCLIENT_BASE = 0x626E8C;
+	const uint32_t SPELL_DBC_ID = 404;
+
+	// Mark as not loaded
+	WowClientDB_Base* ploader = (WowClientDB_Base*)DBCGloabls::g_spellDB;
+	ploader->m_loaded = 0;
+	ploader->m_numRecords = 0;
+
+	// Get vtable and load function
+	uintptr_t vtable = *(uintptr_t*)DBCGloabls::g_spellDB;
+	uintptr_t loadFunction = *(uintptr_t*)(vtable + 4);
+
+	// Call the load function
+	__try {
+		__asm {
+			push SPELL_DBC_ID       // Push dbc_id (404)
+			push DBCLIENT_BASE      // Push dbc_base (0x626E8C)
+			mov ecx, DBCGloabls::g_spellDB           // Set this pointer
+			mov eax, vtable
+			mov eax, [eax + 4]        // Get load function address
+			call eax                // Call it
+		}
+
+		CGChat::AddChatMessage("Spell.dbc hot reloaded successfully!", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+		FrameScript::PushBoolean(L, true);
+	}
+	__except (EXCEPTION_EXECUTE_HANDLER) {
+		CGChat::AddChatMessage("Spell.dbc reload failed - crash occurred", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+		FrameScript::PushBoolean(L, false);
+	}
+
+	return 1;
+}
+
+// Just a testing name for now, when it works, will change name.
+int CustomLua::ChangeSpellVisual(lua_State* L)
+{
+	uint64_t playerGUID = ClntObjMgr::GetActivePlayer();
+	void* pScene = *(void**)0xCD754C;
+
+	void* pMyModel = CM2Scene::CreateModel(pScene, "Spells\\ErrorCube.mdx", 0);
+	if (!pMyModel) return 0;
+
+	void* pPlayer = ClntObjMgr::ObjectPtr(playerGUID, TYPEMASK_PLAYER);
+	if (!pPlayer) return 0;
+
+	// Try different offsets to find the model
+	// Common offsets: 0x88, 0xA0, 0xA4, 0xA8, 0xAC
+	void* pPlayerModel = nullptr;
+
+	for (int offset = 0x80; offset <= 0xB0; offset += 4) {
+		void* candidate = *(void**)((uintptr_t)pPlayer + offset);
+		if (candidate && (uintptr_t)candidate > 0x10000) {
+			// Quick check: does it look like a vtable?
+			void** vtable = *(void***)candidate;
+			if (vtable && (uintptr_t)vtable > 0x400000 && (uintptr_t)vtable < 0x900000) {
+				pPlayerModel = candidate;
+				break;
+			}
+		}
+	}
+
+	if (!pPlayerModel) {
+		// Try a more common approach: look for model in CGUnit_C
+		// The model might be in CGUnit_C + 0x9C0 or similar
+		void* pUnit = (void*)((uintptr_t)pPlayer + 0x9C0);
+		pPlayerModel = *(void**)pUnit;
+	}
+
+	if (!pPlayerModel) return 0;
+
+	// Prepare parameters
+	unsigned int attachmentPoint = 0xFFFFFFFF;  // -1 = no specific bone
+	float vecOffset[3] = { 0.0f, 0.0f, 2.0f };  // 2 units above
+	int flags = 1;  // Usually 1 for scale
+
+	// Call using __thiscall - correct inline assembly
+	__asm {
+		// Push parameters in reverse order
+		push flags          // a5 (int)
+		lea eax, vecOffset  // a4 (C3Vector*)
+		push eax
+		push attachmentPoint // a3 (unsigned int)
+		push pPlayerModel   // a2 (void* parent model)
+
+		// Set ECX to 'this' pointer (the model to attach)
+		mov ecx, pMyModel
+
+		// Call the function
+		mov eax, 0x831630   // Function address
+		call eax
+
+		// Clean up stack (4 parameters * 4 bytes = 16)
+		add esp, 16
+	}
+
+	return 0;
+}
+
+/*
+int CustomLua::ChangeSpellVisual(lua_State* L)
+{
+	uint64_t playerGUID = ClntObjMgr::GetActivePlayer();
+
+
+
+    // Get the global scene pointer
+    void* pScene = *(void**)0xCD754C; // Address of CWorldScene__s_m2Scene
+    
+	void* pMyModel = CM2Scene::CreateModel(pScene, "Spells\\ErrorCube.mdx", 0);
+	if (!pMyModel) return 0;
+
+	void* pPlayer = ClntObjMgr::ObjectPtr(playerGUID, TYPEMASK_PLAYER);
+
+	if (pPlayer)
+	{
+		// 4. Get Player's Model Ptr
+		// In CGUnit_C, offset 0xA30 usually holds pointers to visual data, 
+		// usually M2Model is at +0x88 or derived. 
+		// For simplicity, let's assume we want to attach to the main model.
+		// CGObject_C + 0x88 is often the CM2Model* for the unit.
+		int pPlayerModel = *(int*)((uintptr_t)pPlayer + 0x88);
+
+		if (pPlayerModel)
+		{
+			
+			int scale = 1.0f;
+
+			C3Vector offset = { 0.0f, 2.0f, 0.0f };  // 2 units above
+
+			// Use assembly to call __thiscall
+#ifdef _MSC_VER
+			__asm {
+				push 1                    // flags
+				lea eax, offset
+				push eax
+				push attachmentPoint
+				push pPlayerModel
+				mov ecx, pMyModel
+				call 0x831630
+				add esp, 16
+			}
+#endif
+
+
+
+			// this = pMyModel
+			//CM2Model::AttachToParent(pMyModel, pPlayerModel, testVector, scale);
+			/*
+			// 6. Set Flag to Force Update/Render
+			// This maybe works, but the above line crashes the game.
+			// 0x10 is flags offset in CM2Model. 0x8000 is often "Visible/Active"
+			*(uint32_t*)((uintptr_t)pMyModel + 0x10) |= 0x8000;
+			
+			return 0;
+		}
+	}
+
+    return 0;
+}
+*/
 
 void CustomLua::AddToFunctionMap(char* name, void* ptr)
 {
@@ -596,6 +776,8 @@ void CustomLua::RegisterFunctions()
 		AddToFunctionMap("ToggleWireframeMode", &ToggleWireframeMode);
 		AddToFunctionMap("ToggleWMO", &ToggleWMO);
 		AddToFunctionMap("GetLocalPlayer", &GetLocalPlayer);
+		AddToFunctionMap("HotReloadSpellDBC", &HotReloadSpellDBC);
+		AddToFunctionMap("ChangeSpellVisual", &ChangeSpellVisual);
 	}
 
 	if (customPackets)

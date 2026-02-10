@@ -42,6 +42,12 @@ private:
 	static int ToggleWMO(lua_State* L);
 	static int GetLocalPlayer(lua_State* L);
 
+	static int HotReloadSpellDBC(lua_State* L);
+
+	static int ChangeSpellVisual(lua_State* L);
+
+	static int HotPatchItem(lua_State* L);
+
 
 	// Custom packet functions
 	static int GetCustomCombatRating(lua_State* L);

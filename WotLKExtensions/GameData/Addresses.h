@@ -260,6 +260,10 @@ namespace DBCAddresses
 	constexpr uintptr_t ZONEMUSICDB = 0x00AD4FB8;
 }
 
+namespace CacheAddresses {
+	constexpr uintptr_t ITEMCACHE = 0xC5D828;
+}
+
 namespace FuncAddresses {
 
 # pragma region Client-Manager
@@ -269,6 +273,8 @@ namespace FuncAddresses {
 	constexpr uintptr_t GET_OBJECT_PTR = 0x4D4DB0;
 
 # pragma endregion
+
+	constexpr uintptr_t DB_ITEM_CACHE_GET_INFO_BLOCK_BY_ID = 0x67CA30;
 
 
 	// Functions
