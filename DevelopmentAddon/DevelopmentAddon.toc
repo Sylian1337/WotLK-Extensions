@@ -1,0 +1,12 @@
+## Interface: 30300
+## Title: Development Addon
+## Author: Sylian | xidk
+## Version: 1.0
+## Notes: Advanced development tools for WoW 3.3.5a
+## SavedVariables: DevelopmentAddon
+
+Core.lua
+UI.lua
+DBCManager.lua
+PlayerTools.lua
+DebugTools.lua
