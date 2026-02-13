@@ -328,3 +328,16 @@ namespace CM2Model_Addresses {
 	constexpr uintptr_t ADDR_REPLACE_TEXTURE = 0x825260;
 	constexpr uintptr_t ADDR_INIT_LOADED = 0x832EA0;
 }
+
+namespace CTexture_Addresses {
+		constexpr uintptr_t ADDR_TEXTURE_CREATE_3 = 0x4B9760;
+}
+
+namespace CGxTexFlags_Addresses {
+		constexpr uintptr_t ADDR_CONSTRUCTOR = 0x4B9760;
+}
+
+namespace CCharacterComponent_Addresses {
+		constexpr uintptr_t ADDR_ADD_HAND_ITEM = 0x4EACD0;
+		constexpr uintptr_t ADDR_REMOVE_LINK_PT = 0x4E79A0;
+}

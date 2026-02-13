@@ -472,3 +472,28 @@ namespace CM2Model {
 	CLIENT_FUNCTION(InitializeLoaded, CM2Model_Addresses::ADDR_INIT_LOADED, __thiscall, int,
 		(int pThis))
 }
+
+namespace CTexture
+{
+	// TextureCreate - Creates a texture from file/data
+	// Parameters: a1 = texture path/name, a2 = ?, a3 = ?, a4 = ?
+	// NOTE: Not tested yet, I simply added it so it would be easier for you ma dude :D
+	CLIENT_FUNCTION(Create, CTexture_Addresses::ADDR_TEXTURE_CREATE_3, __cdecl, int,
+		(char* textureBlock, int a2, int a3, int a4))
+}
+
+namespace CGxTexFlags
+{
+	// NOTE: Not tested yet, I simply added it so it would be easier for you ma dude :D
+	CLIENT_FUNCTION(TexConstructor, CGxTexFlags_Addresses::ADDR_CONSTRUCTOR, __thiscall, uint32_t,
+		(uint32_t* pThis, int a2, char* a3, char* a4, char* a5, char* a6, char* a7, uint32_t a8, char* a9, char* a10, char* a11))
+}
+
+namespace CCharacterComponent
+{
+	CLIENT_FUNCTION(AddHandItem, CCharacterComponent_Addresses::ADDR_ADD_HAND_ITEM, __cdecl, uint32_t,
+		(int a1, int a2, uint32_t a3, int a4, char* a5, char* a6, char* a7, void* itemVisualsRec))
+
+	CLIENT_FUNCTION(RemoveLinkPt, CCharacterComponent_Addresses::ADDR_REMOVE_LINK_PT, __cdecl, void,
+		(int a1, uint32_t a2))
+}
