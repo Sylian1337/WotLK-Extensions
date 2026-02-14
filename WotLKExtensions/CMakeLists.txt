@@ -29,6 +29,19 @@ target_include_directories(WotLKExtensions PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
+# Add MinHook include directory – note the extra "WotLKExtensions"
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/minhook/include)
+
+# Add MinHook library – same correction
+if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+    set(MINHOOK_LIB ${CMAKE_CURRENT_SOURCE_DIR}/deps/minhook/lib/libMinHook.x64.lib)
+else()
+    set(MINHOOK_LIB ${CMAKE_CURRENT_SOURCE_DIR}/deps/minhook/lib/libMinHook.x86.lib)
+endif()
+
+# Link it to your project (after add_subdirectory)
+target_link_libraries(WotLKExtensions ${MINHOOK_LIB})
+
 set(LOG_LEVELS DEBUG INFO WARN ERROR NONE)
 set(LOG_LEVEL DEBUG CACHE STRING "Logging level")
 set_property(CACHE LOG_LEVEL PROPERTY STRINGS ${LOG_LEVELS})
