@@ -43,6 +43,7 @@ function SylianDevAddon:CreateMainFrame()
         {name = "DBC Tools"},
         {name = "Player"},
         {name = "Transmog"},
+        {name = "Hotpatch"},
         {name = "Debug"},
     }
     
@@ -99,7 +100,8 @@ function SylianDevAddon:CreateMainFrame()
     self:LoadDBCTab(frame.tabFrames[1])
     self:LoadPlayerTab(frame.tabFrames[2])
     self:LoadTransmogTab(frame.tabFrames[3])
-    self:LoadDebugTab(frame.tabFrames[4])
+    self:LoadHotpachTool(frame.tabFrames[4])
+    self:LoadDebugTab(frame.tabFrames[5])
 
     -- Show first tab
     self:ShowTab(1)
@@ -121,37 +123,7 @@ function SylianDevAddon:ShowTab(tabIndex)
     end
 end
 
--- Transmog Tab (Now only runs once at startup)
-function SylianDevAddon:LoadTransmogTab(parent)
-    local yOffset = -10
-    
-    -- Title
-    local title = parent:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    title:SetPoint("TOP", 0, yOffset)
-    title:SetText("|cff00ccffTransmog System|r")
-    yOffset = yOffset - 30
-    
-    -- Info text
-    local infoText = parent:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-    infoText:SetPoint("TOP", 0, yOffset)
-    infoText:SetText("Transmog functionality coming soon...")
-    infoText:SetTextColor(0.7, 0.7, 0.7)
-    yOffset = yOffset - 40
-    
-    -- Test Model Attachment Button
-    local attachBtn = CreateFrame("Button", nil, parent, "UIPanelButtonTemplate")
-    attachBtn:SetSize(200, 30)
-    attachBtn:SetPoint("TOP", 0, yOffset)
-    attachBtn:SetText("Test Model Attachment")
-    attachBtn:SetScript("OnClick", function()
-        if _G["ChangeSpellVisual"] then
-            _G["ChangeSpellVisual"]()
-            print("|cff00ccffAttempting to attach model to player...|r")
-        else
-            print("|cffff0000ChangeSpellVisual function not found|r")
-        end
-    end)
-end
+
 
 -- Note: Make sure you update LoadDBCTab, LoadPlayerTab, and LoadDebugTab 
 -- to use the 'parent' passed to them, similar to the Transmog tab above.

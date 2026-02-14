@@ -49,14 +49,15 @@ function SylianDevAddon:LoadDebugTab(parent)
         -- Test basic functions
         local funcs = {
             "GetLocalPlayer",
-            "HotReloadSpellDBC",
-            "HotPatchItem",
-            "ApplyTransmog"
+            "HotReloadDBC",
+            "AttachToParentTestingFunction",
+            "InstallAllHotpatches",
+            "UninstallAllHotpatches"
         }
         
         for _, funcName in ipairs(funcs) do
             local exists = _G[funcName] ~= nil
-            print(string.format("%s: %s", funcName, exists and "|cff00ff00✓ Found|r" or "|cffff0000✗ Missing|r"))
+            print(string.format("%s: %s", funcName, exists and "|cff00ff00 Found|r" or "|cffff0000 Missing|r"))
         end
     end)
 end

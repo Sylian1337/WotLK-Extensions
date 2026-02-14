@@ -9,4 +9,6 @@ Core.lua
 UI.lua
 DBCManager.lua
 PlayerTools.lua
+TransmogTool.lua
+HotpatchManager.lua
 DebugTools.lua

@@ -4,7 +4,7 @@ SylianDevAddon = {}
 -- Database
 SylianDevAddonDB = SylianDevAddonDB or {
     windowPosition = { point = "CENTER", x = 0, y = 0 },
-    windowSize = { width = 350, height = 500 },
+    windowSize = { width = 450, height = 500 },
     showMinimapButton = false, -- Disabled by default
     lastUsedFunctions = {},
 }
