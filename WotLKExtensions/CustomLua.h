@@ -41,12 +41,10 @@ private:
 	static int ToggleWireframeMode(lua_State* L);
 	static int ToggleWMO(lua_State* L);
 	static int GetLocalPlayer(lua_State* L);
-
 	static int HotReloadDBC(lua_State* L);
-
 	static int AttachToParentTestingFunction(lua_State* L);
-
-	static int HotPatchItem(lua_State* L);
+	static int InstallAllHotpatches(lua_State* L);
+	static int UninstallAllHotpatches(lua_State* L);
 
 
 	// Custom packet functions

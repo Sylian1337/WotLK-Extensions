@@ -2,7 +2,10 @@
 #include "Player.h"
 #include "CDBCMgr/CDBCDefs/LFGRoles.h"
 #include "GameObjects/CGObject.h"
+#include "GameObjects/CGItem.h"
 #include <DBCReloader/DBCReloader.h>
+#include <Hotpatches/HotpatchManager.h>
+
 
 void CustomLua::Apply()
 {
@@ -687,6 +690,18 @@ int CustomLua::AttachToParentTestingFunction(lua_State* L)
 	return 0;
 }
 
+int CustomLua::InstallAllHotpatches(lua_State* L)
+{
+	HotpatchManager::InitializeAll();
+	return 0;
+}
+
+int CustomLua::UninstallAllHotpatches(lua_State* L) {
+	HotpatchManager::ShutdownAll();
+	return 0;
+}
+
+
 void CustomLua::AddToFunctionMap(char* name, void* ptr)
 {
 	luaFuncts.insert(std::make_pair(name, ptr));
@@ -724,6 +739,8 @@ void CustomLua::RegisterFunctions()
 		AddToFunctionMap("GetLocalPlayer", &GetLocalPlayer);
 		AddToFunctionMap("HotReloadDBC", &HotReloadDBC);
 		AddToFunctionMap("AttachToParentTestingFunction", &AttachToParentTestingFunction);
+		AddToFunctionMap("InstallAllHotpatches", &InstallAllHotpatches);
+		AddToFunctionMap("UninstallAllHotpatches", &UninstallAllHotpatches);
 	}
 
 	if (customPackets)
