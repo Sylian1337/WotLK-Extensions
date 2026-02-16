@@ -272,8 +272,126 @@ namespace DBCGloabls
 
 // These are static locations, like the DBGlobals, just these holds the data gotten from the server at start-up.
 namespace CacheGloabls {
-	static void** g_itemCacheDB = (void**)CacheAddresses::ITEMCACHE;
+	//static void** g_itemCacheDB = (void**)DBCacheAddresses::DB_ITEM_CACHE_GETINFOBYID;
 
+}
+
+namespace DBCacheStructs
+{
+	struct DBQuestCache {
+		// 4‑byte fields at offsets 0, 4, 8, …, 176
+		uint32_t questID;
+		uint32_t questType;
+		uint32_t questLevel;
+		uint32_t minLevel;
+		uint32_t questSortID;
+		uint32_t questInfoID;
+		uint32_t suggestedGroupNum;
+		uint32_t requiredFactionId1;
+		uint32_t requiredFactionId2;
+		uint32_t requiredFactionId3;
+		uint32_t requiredFactionValue1;
+		uint32_t requiredFactionValue2;
+		uint32_t rewardNextQuest;
+		uint32_t rewardXPDifficulty;
+		uint32_t rewardMoney;
+		uint32_t field_60;
+		uint32_t field_64;
+		uint32_t field_68;
+		uint32_t field_72;
+		uint32_t flags;
+		uint32_t field_80;
+		uint32_t field_84;
+		uint32_t field_88;
+		uint32_t field_92;
+		uint32_t field_96;
+		uint32_t field_100;
+		uint32_t field_104;
+		uint32_t field_108;
+		uint32_t field_112;
+		uint32_t field_116;
+		uint32_t field_120;
+		uint32_t field_124;
+		uint32_t field_128;
+		uint32_t field_132;
+		uint32_t field_136;
+		uint32_t field_140;
+		uint32_t field_144;
+		uint32_t field_148;
+		uint32_t field_152;
+		uint32_t field_156;
+		uint32_t field_160;
+		uint32_t field_164;
+		uint32_t field_168;
+		uint32_t field_172;
+		uint32_t field_176;
+
+		// 19‑byte string at offset 180
+		char questName;
+	};
+
+	/// <summary>
+	/// Represents a cached database entry for a game object, containing an object type, display identifier, a few pointer fields, and numerous data/reserved fields.
+	/// </summary>
+	struct DBGameObjectCache
+	{
+		uint32_t Type;               // 0x000
+		uint32_t DisplayID;          // 0x004
+		uintptr_t unkPtr1;           // 0x008
+		uintptr_t unkPtr2;           // 0x00C
+		uintptr_t unkPtr3;           // 0x010
+		uint32_t Data0;         	 // 0x014
+		uint32_t Data1;          	 // 0x018
+		uint32_t Data2;              // 0x01C
+		uint32_t Data3;       		 // 0x020
+		uint32_t Data4;              // 0x024
+		uint32_t Data5;   			 // 0x028
+		uint32_t Data6;           	 // 0x02C
+		uint32_t Data7;        		 // 0x030
+		uint32_t Data8;      		 // 0x034
+		uint32_t Data9;        		 // 0x038
+		uint32_t Data10;    		 // 0x03C
+		uint32_t Data11;             // 0x040
+		uint32_t Data12;             // 0x044
+		uint32_t Data13;             // 0x048
+		uint32_t Data14;             // 0x04C
+		uint32_t Data15;             // 0x050
+		uint32_t Data16;             // 0x054
+		uint32_t Data17;             // 0x058
+		uint32_t Data18;             // 0x05C
+		uint32_t Data19;             // 0x060
+		uint32_t Data20;             // 0x064
+		uint32_t Data21;             // 0x068
+		uint32_t Data22;             // 0x06C
+		uint32_t Data23;             // 0x070
+		uint32_t unk24;              // 0x074
+		uint32_t unk25;              // 0x078
+		uint32_t unk26;              // 0x07C
+		uint32_t unk27;              // 0x080
+		uint32_t unk28;              // 0x084
+		uint32_t unk29;              // 0x088
+		uint32_t unk30;              // 0x08C
+		uintptr_t unkPtr4;           // 0x090
+		uint32_t unk32;              // 0x094
+		uint32_t unk33;              // 0x098
+		uint32_t unk34;              // 0x09C
+		uint32_t entry;              // 0x0A0
+		uint32_t size;               // 0x0A4
+		uint32_t unk37;              // 0x0A8
+		uintptr_t unkPtr5;           // 0x0AC
+		uintptr_t unkPtr6;           // 0x0B0
+		uint32_t unk40;              // 0x0B4
+		uint32_t unk41;              // 0x0B8
+		uint32_t unk42;              // 0x0BC
+		uintptr_t unkPtr7;           // 0x0C0
+		uint32_t unk44;              // 0x0C4
+		uintptr_t unkPtr8;           // 0x0C8
+		uintptr_t unkPtr9;           // 0x0CC
+		uintptr_t unkPtr10;          // 0x0D0
+		uintptr_t unkPtr11;          // 0x0D4
+		uintptr_t unkPtr12;          // 0x0D8
+		uint32_t unk45;              // 0x0DC
+	};
 }
 
 
