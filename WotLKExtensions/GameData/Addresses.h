@@ -279,6 +279,23 @@ namespace DBCacheAddresses
 	constexpr uintptr_t DB_ITEMTEXT_CACHE_GETINFOBYID = 0x67F4C0;
 	constexpr uintptr_t DB_PAGETEXT_CACHE_GETINFOBYID = 0x680170;
 	constexpr uintptr_t DB_DANCE_CACHE_GETINFOBYID = 0x6806D0;
+
+	// DBCache Addresses
+	constexpr uintptr_t DB_DANCE_CACHE = 0xC5D690;
+	constexpr uintptr_t DB_GAMEOBJECT_CACHE = 0xC5D718;
+	constexpr uintptr_t DB_PAGETEXT_CACHE = 0xC5D828;
+	constexpr uintptr_t DB_ITEMTEXT_CACHE = 0xC5D7A0;
+	constexpr uintptr_t DB_ITEMNAME_CACHE = 0xC5D8B0;
+	constexpr uintptr_t DB_GUILD_CACHE = 0xC5D938;
+	constexpr uintptr_t DB_ARENATEAM_CACHE = 0xC5D9C0;
+	constexpr uintptr_t DB_NAME_CACHE = 0xC5DA48;
+	constexpr uintptr_t DB_PETNAME_CACHE = 0xC5DAD0;
+	constexpr uintptr_t DB_QUEST_CACHE = 0xC5DB58;
+	constexpr uintptr_t DB_NPC_CACHE = 0xC5DBE0;
+	constexpr uintptr_t DB_CREATURE_CACHE = 0xC5DC68;
+	constexpr uintptr_t DB_WOW_CACHE = 0xC5DCF0;
+	constexpr uintptr_t DB_ITEM_CACHE = 0xC5DD78;
+	constexpr uintptr_t DB_PETITION_CACHE = 0xC5DE00;
 }
 
 namespace FuncAddresses {
