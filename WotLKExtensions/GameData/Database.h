@@ -2,6 +2,9 @@
 #pragma once
 #include "Addresses.h"
 
+struct WowClientDB_SpellRec;
+struct WowClientDB_SpellVisualRec;
+
 namespace DBCGloabls
 {
 	// Usage: uint32_t* dbPtr = *DB::g_spellDB;
@@ -194,7 +197,7 @@ namespace DBCGloabls
 	static void** g_spellCastTimesDB = (void**)DBCAddresses::SPELLCASTTIMESDB;
 	static void** g_spellCategoryDB = (void**)DBCAddresses::SPELLCATEGORYDB;
 	static void** g_spellChainEffectsDB = (void**)DBCAddresses::SPELLCHAINEFFECTSDB;
-	static void** g_spellDB = (void**)DBCAddresses::SPELLDB;
+	static WowClientDB_SpellRec* g_spellDB = reinterpret_cast<WowClientDB_SpellRec*>(DBCAddresses::SPELLDB);
 	static void** g_spellDescriptionVariablesDB = (void**)DBCAddresses::SPELLDESCRIPTIONVARIABLESDB;
 	static void** g_spellDifficultyDB = (void**)DBCAddresses::SPELLDIFFICULTYDB;
 	static void** g_spellDispelTypeDB = (void**)DBCAddresses::SPELLDISPELTYPEDB;
@@ -211,7 +214,7 @@ namespace DBCGloabls
 	static void** g_spellRangeDB = (void**)DBCAddresses::SPELLRANGEDB;
 	static void** g_spellRuneCostDB = (void**)DBCAddresses::SPELLRUNECOSTDB;
 	static void** g_spellShapeshiftFormDB = (void**)DBCAddresses::SPELLSHAPESHIFTFORMDB;
-	static void** g_spellVisualDB = (void**)DBCAddresses::SPELLVISUALDB;
+	static WowClientDB_SpellVisualRec* g_spellVisualDB = reinterpret_cast<WowClientDB_SpellVisualRec*>(DBCAddresses::SPELLVISUALDB);
 	static void** g_spellVisualEffectNameDB = (void**)DBCAddresses::SPELLVISUALEFFECTNAMEDB;
 	static void** g_spellVisualKitAreaModelDB = (void**)DBCAddresses::SPELLVISUALKITAREAMODELDB;
 	static void** g_spellVisualKitDB = (void**)DBCAddresses::SPELLVISUALKITDB;
@@ -330,9 +333,7 @@ namespace DBCacheStructs
 		char questName;
 	};
 
-	/// <summary>
 	/// Represents a cached database entry for a game object, containing an object type, display identifier, a few pointer fields, and numerous data/reserved fields.
-	/// </summary>
 	struct DBGameObjectCache
 	{
 		uint32_t Type;               // 0x000
@@ -411,6 +412,38 @@ struct WowClientDB_Base
 	const char* m_strings;
 };
 
+
+struct SpellVisualRec
+{
+	int32_t m_ID;
+	int32_t m_precastKit;
+	int32_t m_castKit;
+	int32_t m_impactKit;
+	int32_t m_stateKit;
+	int32_t m_stateDoneKit;
+	int32_t m_channelKit;
+	int32_t m_hasMissile;
+	int32_t m_missileModel;
+	int32_t m_missilePathType;
+	int32_t m_missileDestinationAttachment;
+	int32_t m_missileSound;
+	int32_t m_animEventSoundID;
+	int32_t m_flags;
+	int32_t m_casterImpactKit;
+	int32_t m_targetImpactKit;
+	int32_t m_missileAttachment;
+	int32_t m_missileFollowGroundHeight;
+	int32_t m_missileFollowGroundDropSpeed;
+	int32_t m_missileFollowGroundApproach;
+	int32_t m_missileFollowGroundFlags;
+	int32_t m_missileMotion;
+	int32_t m_missileTargetingKit;
+	int32_t m_instantAreaKit;
+	int32_t m_impactAreaKit;
+	int32_t m_persistentAreaKit;
+	float m_missileCastOffset[3];
+	float m_missileImpactOffset[3];
+};
 
 struct SpellRec
 {
@@ -538,6 +571,25 @@ struct WowClientDB_SpellRec
 {
 	WowClientDB_Common_SpellRec b_base_01;
 	IDatabase_SpellRec b_base_02;
+};
+
+struct IDatabase_SpellVisualRec
+{
+	IDatabase__vtable* v_table;
+	SpellVisualRec* m_records;
+	SpellVisualRec** m_recordsById;
+};
+
+
+struct WowClientDB_Common_SpellVisualRec
+{
+	WowClientDB_Base b_base;
+};
+
+struct WowClientDB_SpellVisualRec
+{
+	WowClientDB_Common_SpellVisualRec b_base_01;
+	IDatabase_SpellVisualRec b_base_02;
 };
 
 

@@ -226,39 +226,6 @@ struct SpellRow
 	uint32_t padding0x230[30];
 };
 
-
-struct SpellVisualRec
-{
-	int32_t m_ID;
-	int32_t m_precastKit;
-	int32_t m_castKit;
-	int32_t m_impactKit;
-	int32_t m_stateKit;
-	int32_t m_stateDoneKit;
-	int32_t m_channelKit;
-	int32_t m_hasMissile;
-	int32_t m_missileModel;
-	int32_t m_missilePathType;
-	int32_t m_missileDestinationAttachment;
-	int32_t m_missileSound;
-	int32_t m_animEventSoundID;
-	int32_t m_flags;
-	int32_t m_casterImpactKit;
-	int32_t m_targetImpactKit;
-	int32_t m_missileAttachment;
-	int32_t m_missileFollowGroundHeight;
-	int32_t m_missileFollowGroundDropSpeed;
-	int32_t m_missileFollowGroundApproach;
-	int32_t m_missileFollowGroundFlags;
-	int32_t m_missileMotion;
-	int32_t m_missileTargetingKit;
-	int32_t m_instantAreaKit;
-	int32_t m_impactAreaKit;
-	int32_t m_persistentAreaKit;
-	float m_missileCastOffset[3];
-	float m_missileImpactOffset[3];
-};
-
 struct SpellVisualKitRec
 {
 	int32_t m_ID;
@@ -348,7 +315,7 @@ namespace CGUnit_C
 
 namespace ClientDB
 {
-	CLIENT_FUNCTION(GetSpellVisualRow, FuncAddresses::GET_SPELL_VISUAL_ROW, __cdecl, SpellVisualRec*, (void*))
+	//CLIENT_FUNCTION(GetSpellVisualRow, FuncAddresses::GET_SPELL_VISUAL_ROW, __cdecl, SpellVisualRec*, (void*))
 	CLIENT_FUNCTION(GetLocalizedRow, FuncAddresses::GET_LOCALIZED_ROW, __thiscall, int, (void*, uint32_t, void*))
 	CLIENT_FUNCTION(GetRow, FuncAddresses::GET_ROW, __thiscall, void*, (void*, uint32_t))
 	CLIENT_FUNCTION(GetGameTableValue, FuncAddresses::GET_GAME_TABLE_VALUE, __cdecl, double, (uint32_t, uint32_t, uint32_t)) // this technically is not a part of ClientDB iirc but who cares

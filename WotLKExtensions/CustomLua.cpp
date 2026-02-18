@@ -5,6 +5,7 @@
 #include "GameObjects/CGItem.h"
 #include <DBCReloader/DBCReloader.h>
 #include <Hotpatches/HotpatchManager.h>
+#include <GameData/Database.h>
 
 
 void CustomLua::Apply()
@@ -541,6 +542,7 @@ int CustomLua::SendExamplePacket(lua_State* L)
 
 int CustomLua::GetLocalPlayer(lua_State* L) {
 
+
 	uint64_t playerGUID = ClntObjMgr::GetActivePlayer();
 
 	if (playerGUID) {
@@ -692,6 +694,7 @@ int CustomLua::AttachToParentTestingFunction(lua_State* L)
 
 int CustomLua::InstallAllHotpatches(lua_State* L)
 {
+	HotpatchManager::InitializeAll();
 	HotpatchManager::InitializeAll();
 	return 0;
 }
