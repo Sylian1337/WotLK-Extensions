@@ -45,6 +45,8 @@ private:
 	static int AttachToParentTestingFunction(lua_State* L);
 	static int InstallAllHotpatches(lua_State* L);
 	static int UninstallAllHotpatches(lua_State* L);
+	static int LuaSetSpellVisualOverride(lua_State* L);
+	static int LuaRemoveSpellVisualOverride(lua_State* L);
 
 
 	// Custom packet functions

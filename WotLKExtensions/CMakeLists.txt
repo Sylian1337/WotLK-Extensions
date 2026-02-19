@@ -59,3 +59,14 @@ elseif(LOG_LEVEL STREQUAL "NONE")
 else()
     message(FATAL_ERROR "Invalid LOG_LEVEL ${LOG_LEVEL}")
 endif()
+
+# Optional: Auto-copy DLL to WoW client directory (same folder as Wow.exe)
+if(WOW_CLIENT_PATH AND EXISTS "${WOW_CLIENT_PATH}")
+    add_custom_command(TARGET WotLKExtensions POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            $<TARGET_FILE:WotLKExtensions>
+            "${WOW_CLIENT_PATH}/WotLKExtensions.dll"
+        COMMENT "Copying WotLKExtensions.dll to ${WOW_CLIENT_PATH}"
+    )
+    message(STATUS "DLL auto-copy enabled: WotLKExtensions.dll will be copied to ${WOW_CLIENT_PATH}")
+endif()

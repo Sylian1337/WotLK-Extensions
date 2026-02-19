@@ -5,6 +5,7 @@
 #include "GameObjects/CGItem.h"
 #include <DBCReloader/DBCReloader.h>
 #include <Hotpatches/HotpatchManager.h>
+#include <Hotpatches/SpellVisualPatches.h>
 #include <GameData/Database.h>
 
 
@@ -695,12 +696,54 @@ int CustomLua::AttachToParentTestingFunction(lua_State* L)
 int CustomLua::InstallAllHotpatches(lua_State* L)
 {
 	HotpatchManager::InitializeAll();
-	HotpatchManager::InitializeAll();
 	return 0;
 }
 
 int CustomLua::UninstallAllHotpatches(lua_State* L) {
 	HotpatchManager::ShutdownAll();
+	return 0;
+}
+
+// SetSpellVisualOverride(originalVisualId, newVisualId)
+// Example: SetSpellVisualOverride(67, 13)
+//   → any spell using SpellVisual ID 67 (Fireball r1) will display visual 13 (Frostbolt) instead.
+// Requires InstallAllHotpatches() to have been called first.
+int CustomLua::LuaSetSpellVisualOverride(lua_State* L)
+{
+	if (!FrameScript::IsNumber(L, 1) || !FrameScript::IsNumber(L, 2))
+	{
+		FrameScript::DisplayError(L, "Usage: SetSpellVisualOverride(originalVisualId, newVisualId)");
+		return 0;
+	}
+
+	uint32_t originalVisualId = static_cast<uint32_t>(FrameScript::GetNumber(L, 1));
+	uint32_t newVisualId      = static_cast<uint32_t>(FrameScript::GetNumber(L, 2));
+
+	SetSpellVisualOverride(originalVisualId, newVisualId);
+
+	char buffer[128];
+	SStr::Printf(buffer, sizeof(buffer), "SpellVisual override set: %u -> %u", originalVisualId, newVisualId);
+	CGChat::AddChatMessage(buffer, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+	return 0;
+}
+
+// RemoveSpellVisualOverride(originalVisualId)
+// Removes a previously registered visual override.
+int CustomLua::LuaRemoveSpellVisualOverride(lua_State* L)
+{
+	if (!FrameScript::IsNumber(L, 1))
+	{
+		FrameScript::DisplayError(L, "Usage: RemoveSpellVisualOverride(originalVisualId)");
+		return 0;
+	}
+
+	uint32_t originalVisualId = static_cast<uint32_t>(FrameScript::GetNumber(L, 1));
+
+	RemoveSpellVisualOverride(originalVisualId);
+
+	char buffer[128];
+	SStr::Printf(buffer, sizeof(buffer), "SpellVisual override removed for visual ID: %u", originalVisualId);
+	CGChat::AddChatMessage(buffer, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 	return 0;
 }
 
@@ -744,6 +787,8 @@ void CustomLua::RegisterFunctions()
 		AddToFunctionMap("AttachToParentTestingFunction", &AttachToParentTestingFunction);
 		AddToFunctionMap("InstallAllHotpatches", &InstallAllHotpatches);
 		AddToFunctionMap("UninstallAllHotpatches", &UninstallAllHotpatches);
+		AddToFunctionMap("SetSpellVisualOverride", &LuaSetSpellVisualOverride);
+		AddToFunctionMap("RemoveSpellVisualOverride", &LuaRemoveSpellVisualOverride);
 	}
 
 	if (customPackets)
