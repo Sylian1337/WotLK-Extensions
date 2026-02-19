@@ -1,7 +1,170 @@
 //GameData/Database.h
 #pragma once
 #include "Addresses.h"
+#include <cstdint>
 
+// ------------------------------------------------------- //
+// Typed DBC record structs confirmed from RE (build 12340) //
+
+struct SpellRadiusRec
+{
+    uint32_t m_ID;
+    float    m_radius;
+    float    m_radiusPerLevel;
+    float    m_radiusMax;
+};
+
+struct SpellDurationRec
+{
+    uint32_t m_ID;
+    int32_t  m_duration;
+    int32_t  m_durationPerLevel;
+    int32_t  m_maxDuration;
+};
+
+struct SpellItemEnchantmentRec
+{
+    uint32_t m_ID;
+    uint32_t m_charges;
+    uint32_t m_effect[3];
+    uint32_t m_effectPointsMin[3];
+    uint32_t m_effectArg[3];
+    char*    m_name;
+    uint32_t m_itemVisual;
+    uint32_t m_flags;
+    uint32_t m_srcItemID;
+    uint32_t m_conditionID;
+    uint32_t m_requiredSkillID;
+    uint32_t m_requiredSkillRank;
+    uint32_t m_minLevel;
+};
+
+struct SpellMissileRec
+{
+    uint32_t m_ID;
+    uint32_t m_flags;
+    float    m_defaultPitchMin;
+    float    m_defaultPitchMax;
+    float    m_defaultSpeedMin;
+    float    m_defaultSpeedMax;
+    float    m_randomizeFacingMin;
+    float    m_randomizeFacingMax;
+    float    m_randomizePitchMin;
+    float    m_randomizePitchMax;
+    float    m_randomizeSpeedMin;
+    float    m_randomizeSpeedMax;
+    float    m_gravity;
+    float    m_maxDuration;
+    float    m_collisionRadius;
+};
+
+struct SpellMissileMotionRec
+{
+    uint32_t m_ID;
+    char*    m_name;
+    char*    m_scriptBody;
+    int32_t  m_flags;
+    int32_t  m_missileCount;
+};
+
+struct SpellDifficultyRec
+{
+    uint32_t m_ID;
+    int32_t  m_difficultySpellID[4]; // [0]=Normal10, [1]=Normal25, [2]=Heroic10, [3]=Heroic25
+};
+
+struct SpellVisualEffectNameRec
+{
+    uint32_t m_ID;
+    char*    m_fileName;
+    int32_t  m_areaEffectSize;
+    float    m_scale;
+    float    m_minScale;
+    float    m_maxScale;
+};
+
+struct MapRec
+{
+    uint32_t m_ID;
+    char*    m_directory;
+    int32_t  m_instanceType;  // 0=None 1=Party 2=Raid 3=BG 4=Arena
+    int32_t  m_flags;         // 0x100 = dynamic difficulty
+    int32_t  m_pvp;
+    char*    m_mapName;
+    int32_t  m_areaTableID;
+    char*    m_mapDescription0;
+    char*    m_mapDescription1;
+    int32_t  m_loadingScreenID;
+    float    m_minimapIconScale;
+    int32_t  m_corpseMapID;
+    float    m_corpse[2];
+    int32_t  m_timeOfDayOverride;
+    int32_t  m_expansionID;
+    int32_t  m_raidOffset;
+    int32_t  m_maxPlayers;
+};
+
+// SpellVisualKit.dbc — forward-declared in SharedDefines.h, full definition here.
+struct SpellVisualKitRec
+{
+    int32_t m_ID;
+    int32_t m_startAnimID;
+    int32_t m_animID;
+    int32_t m_headEffect;
+    int32_t m_chestEffect;
+    int32_t m_baseEffect;
+    int32_t m_leftHandEffect;
+    int32_t m_rightHandEffect;
+    int32_t m_breathEffect;
+    int32_t m_leftWeaponEffect;
+    int32_t m_rightWeaponEffect;
+    int32_t m_specialEffect[3];
+    int32_t m_worldEffect;
+    int32_t m_soundID;
+    int32_t m_shakeID;
+    int32_t m_charProc[4];
+    float   m_charParamZero[4];
+    float   m_charParamOne[4];
+    float   m_charParamTwo[4];
+    float   m_charParamThree[4];
+    int32_t m_flags;
+};
+
+// IDatabase__vtable and WowClientDB_Base are defined below the namespace,
+// but we need the typed wrappers before the namespace. Define base types here.
+struct IDatabase__vtable_early { void* v_fn_GetRecord; };
+struct WowClientDB_Base_early
+{
+    void**       v_table;
+    int32_t      m_loaded;
+    int32_t      m_numRecords;
+    int32_t      m_maxID;
+    int32_t      m_minID;
+    const char*  m_strings;
+};
+
+#define DEFINE_WOWCLIENTDB(RecType)                                         \
+struct IDatabase_##RecType {                                                \
+    IDatabase__vtable_early* v_table;                                       \
+    RecType*                 m_records;                                     \
+    RecType**                m_recordsById;                                 \
+};                                                                          \
+struct WowClientDB_##RecType {                                              \
+    WowClientDB_Base_early   b_base_01;                                     \
+    IDatabase_##RecType      b_base_02;                                     \
+};
+
+DEFINE_WOWCLIENTDB(SpellRadiusRec)
+DEFINE_WOWCLIENTDB(SpellDurationRec)
+DEFINE_WOWCLIENTDB(SpellItemEnchantmentRec)
+DEFINE_WOWCLIENTDB(SpellMissileRec)
+DEFINE_WOWCLIENTDB(SpellMissileMotionRec)
+DEFINE_WOWCLIENTDB(SpellDifficultyRec)
+DEFINE_WOWCLIENTDB(SpellVisualEffectNameRec)
+DEFINE_WOWCLIENTDB(MapRec)
+DEFINE_WOWCLIENTDB(SpellVisualKitRec)
+
+// Forward declarations for the two typed DBs already in use.
 struct WowClientDB_SpellRec;
 struct WowClientDB_SpellVisualRec;
 
@@ -138,7 +301,7 @@ namespace DBCGloabls
 	static void** g_lockTypeDB = (void**)DBCAddresses::LOCKTYPEDB;
 
 	static void** g_mailTemplateDB = (void**)DBCAddresses::MAILTEMPLATEDB;
-	static void** g_mapDB = (void**)DBCAddresses::MAPDB;
+	static WowClientDB_MapRec* g_mapDB = reinterpret_cast<WowClientDB_MapRec*>(DBCAddresses::MAPDB);
 	static void** g_mapDifficultyDB = (void**)DBCAddresses::MAPDIFFICULTYDB;
 	static void** g_materialDB = (void**)DBCAddresses::MATERIALDB;
 	static void** g_movieDB = (void**)DBCAddresses::MOVIEDB;
@@ -197,28 +360,28 @@ namespace DBCGloabls
 	static void** g_spellCastTimesDB = (void**)DBCAddresses::SPELLCASTTIMESDB;
 	static void** g_spellCategoryDB = (void**)DBCAddresses::SPELLCATEGORYDB;
 	static void** g_spellChainEffectsDB = (void**)DBCAddresses::SPELLCHAINEFFECTSDB;
-	static WowClientDB_SpellRec* g_spellDB = reinterpret_cast<WowClientDB_SpellRec*>(DBCAddresses::SPELLDB);
-	static void** g_spellDescriptionVariablesDB = (void**)DBCAddresses::SPELLDESCRIPTIONVARIABLESDB;
-	static void** g_spellDifficultyDB = (void**)DBCAddresses::SPELLDIFFICULTYDB;
-	static void** g_spellDispelTypeDB = (void**)DBCAddresses::SPELLDISPELTYPEDB;
-	static void** g_spellDurationDB = (void**)DBCAddresses::SPELLDURATIONDB;
-	static void** g_spellEffectCameraShakesDB = (void**)DBCAddresses::SPELLEFFECTCAMERASHAKESDB;
-	static void** g_spellFocusObjectDB = (void**)DBCAddresses::SPELLFOCUSOBJECTDB;
-	static void** g_spellIconDB = (void**)DBCAddresses::SPELLICONDB;
-	static void** g_spellItemEnchantmentConditionDB = (void**)DBCAddresses::SPELLITEMENCHANTMENTCONDITIONDB;
-	static void** g_spellItemEnchantmentDB = (void**)DBCAddresses::SPELLITEMENCHANTMENTDB;
-	static void** g_spellMechanicDB = (void**)DBCAddresses::SPELLMECHANICDB;
-	static void** g_spellMissileDB = (void**)DBCAddresses::SPELLMISSILEDB;
-	static void** g_spellMissileMotionDB = (void**)DBCAddresses::SPELLMISSILEMOTIONDB;
-	static void** g_spellRadiusDB = (void**)DBCAddresses::SPELLRADIUSDB;
-	static void** g_spellRangeDB = (void**)DBCAddresses::SPELLRANGEDB;
-	static void** g_spellRuneCostDB = (void**)DBCAddresses::SPELLRUNECOSTDB;
-	static void** g_spellShapeshiftFormDB = (void**)DBCAddresses::SPELLSHAPESHIFTFORMDB;
-	static WowClientDB_SpellVisualRec* g_spellVisualDB = reinterpret_cast<WowClientDB_SpellVisualRec*>(DBCAddresses::SPELLVISUALDB);
-	static void** g_spellVisualEffectNameDB = (void**)DBCAddresses::SPELLVISUALEFFECTNAMEDB;
-	static void** g_spellVisualKitAreaModelDB = (void**)DBCAddresses::SPELLVISUALKITAREAMODELDB;
-	static void** g_spellVisualKitDB = (void**)DBCAddresses::SPELLVISUALKITDB;
-	static void** g_spellVisualKitModelAttachDB = (void**)DBCAddresses::SPELLVISUALKITMODELATTACHDB;
+	static WowClientDB_SpellRec*                g_spellDB                    = reinterpret_cast<WowClientDB_SpellRec*>               (DBCAddresses::SPELLDB);
+	static void**                               g_spellDescriptionVariablesDB = (void**)DBCAddresses::SPELLDESCRIPTIONVARIABLESDB;
+	static WowClientDB_SpellDifficultyRec*      g_spellDifficultyDB          = reinterpret_cast<WowClientDB_SpellDifficultyRec*>     (DBCAddresses::SPELLDIFFICULTYDB);
+	static void**                               g_spellDispelTypeDB          = (void**)DBCAddresses::SPELLDISPELTYPEDB;
+	static WowClientDB_SpellDurationRec*        g_spellDurationDB            = reinterpret_cast<WowClientDB_SpellDurationRec*>       (DBCAddresses::SPELLDURATIONDB);
+	static void**                               g_spellEffectCameraShakesDB  = (void**)DBCAddresses::SPELLEFFECTCAMERASHAKESDB;
+	static void**                               g_spellFocusObjectDB         = (void**)DBCAddresses::SPELLFOCUSOBJECTDB;
+	static void**                               g_spellIconDB                = (void**)DBCAddresses::SPELLICONDB;
+	static void**                               g_spellItemEnchantmentConditionDB = (void**)DBCAddresses::SPELLITEMENCHANTMENTCONDITIONDB;
+	static WowClientDB_SpellItemEnchantmentRec* g_spellItemEnchantmentDB     = reinterpret_cast<WowClientDB_SpellItemEnchantmentRec*>(DBCAddresses::SPELLITEMENCHANTMENTDB);
+	static void**                               g_spellMechanicDB            = (void**)DBCAddresses::SPELLMECHANICDB;
+	static WowClientDB_SpellMissileRec*         g_spellMissileDB             = reinterpret_cast<WowClientDB_SpellMissileRec*>        (DBCAddresses::SPELLMISSILEDB);
+	static WowClientDB_SpellMissileMotionRec*   g_spellMissileMotionDB       = reinterpret_cast<WowClientDB_SpellMissileMotionRec*>  (DBCAddresses::SPELLMISSILEMOTIONDB);
+	static WowClientDB_SpellRadiusRec*          g_spellRadiusDB              = reinterpret_cast<WowClientDB_SpellRadiusRec*>         (DBCAddresses::SPELLRADIUSDB);
+	static void**                               g_spellRangeDB               = (void**)DBCAddresses::SPELLRANGEDB;
+	static void**                               g_spellRuneCostDB            = (void**)DBCAddresses::SPELLRUNECOSTDB;
+	static void**                               g_spellShapeshiftFormDB      = (void**)DBCAddresses::SPELLSHAPESHIFTFORMDB;
+	static WowClientDB_SpellVisualRec*          g_spellVisualDB              = reinterpret_cast<WowClientDB_SpellVisualRec*>         (DBCAddresses::SPELLVISUALDB);
+	static WowClientDB_SpellVisualEffectNameRec* g_spellVisualEffectNameDB   = reinterpret_cast<WowClientDB_SpellVisualEffectNameRec*>(DBCAddresses::SPELLVISUALEFFECTNAMEDB);
+	static void**                               g_spellVisualKitAreaModelDB  = (void**)DBCAddresses::SPELLVISUALKITAREAMODELDB;
+	static WowClientDB_SpellVisualKitRec*       g_spellVisualKitDB           = reinterpret_cast<WowClientDB_SpellVisualKitRec*>      (DBCAddresses::SPELLVISUALKITDB);
+	static void**                               g_spellVisualKitModelAttachDB = (void**)DBCAddresses::SPELLVISUALKITMODELATTACHDB;
 	static void** g_stableSlotPricesDB = (void**)DBCAddresses::STABLESLOTPRICESDB;
 	static void** g_stationeryDB = (void**)DBCAddresses::STATIONERYDB;
 	static void** g_stringLookupsDB = (void**)DBCAddresses::STRINGLOOKUPSDB;

@@ -1,0 +1,22 @@
+# User-local CMake preset - contains personal paths, never commit
+CMakeUserPresets.json
+
+# Build output
+build/
+
+# VS / Rider
+.vs/
+*.user
+*.suo
+*.VC.db
+*.VC.opendb
+
+# CMake generated
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# Misc
+*.log
+CodeBaseExplorer.md

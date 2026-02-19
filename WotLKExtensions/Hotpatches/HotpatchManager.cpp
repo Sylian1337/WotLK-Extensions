@@ -1,18 +1,16 @@
 #include "Hotpatches/HotpatchManager.h"
-#include "Hotpatches/ItemNameHotpatches.h"   // Contains the hooking logic
-#include "Hotpatches/QuestHotpatcher.h"   // Contains the hooking logic
-#include "Hotpatches/SpellVisualPatches.h"   // Contains the hooking logic
-#include "PatchConfig.h"       // Your existing config header
+#include "Hotpatches/ItemNameHotpatches.h"
+#include "Hotpatches/SpellVisualPatches.h"
+#include "PatchConfig.h"
 
 bool HotpatchManager::allIsInitialized = false;
 
 void HotpatchManager::InitializeAll() {
     if(allIsInitialized)
-        return; // Prevent multiple initializations
-    ItemNameHotpatches::InstallHook();  // Your MinHook installation from the previous answer
-    QuestHotpatcher::InstallQuestHooks();  // Your MinHook installation from the previous answer
+        return;
+    ItemNameHotpatches::InstallHook();
 
-    SetSpellVisualOverride(67, 13);
+    SetSpellVisualOverride(67, 13);  // Example: Fireball visual (67) -> Frostbolt visual (13)
 
     InstallSpellVisualHooks();  // Your MinHook installation from the previous answer
 

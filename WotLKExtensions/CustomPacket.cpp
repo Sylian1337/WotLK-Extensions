@@ -81,9 +81,6 @@ void CustomPacket::InitializePlayerEx()
 
     // Register our custom SMSG handlers
     SetCustomHandlers();
-
-    // Test: send a custom CMSG to the server
-    Send_CMSG_CUSTOM_SYLIAN_PACKET();
 }
 
 /*

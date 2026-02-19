@@ -226,30 +226,8 @@ struct SpellRow
 	uint32_t padding0x230[30];
 };
 
-struct SpellVisualKitRec
-{
-	int32_t m_ID;
-	int32_t m_startAnimID;
-	int32_t m_animID;
-	int32_t m_headEffect;
-	int32_t m_chestEffect;
-	int32_t m_baseEffect;
-	int32_t m_leftHandEffect;
-	int32_t m_rightHandEffect;
-	int32_t m_breathEffect;
-	int32_t m_leftWeaponEffect;
-	int32_t m_rightWeaponEffect;
-	int32_t m_specialEffect[3];
-	int32_t m_worldEffect;
-	int32_t m_soundID;
-	int32_t m_shakeID;
-	int32_t m_charProc[4];
-	float m_charParamZero[4];
-	float m_charParamOne[4];
-	float m_charParamTwo[4];
-	float m_charParamThree[4];
-	int32_t m_flags;
-};
+// Full definition lives in GameData/Database.h alongside the other DBC record structs.
+struct SpellVisualKitRec;
 
 // Aleist3r: afaik it's not a full structure but I don't need the rest defined
 struct WoWTime
