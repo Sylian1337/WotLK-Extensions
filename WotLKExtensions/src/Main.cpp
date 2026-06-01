@@ -8,10 +8,10 @@ void Main::OnAttach()
     
     // this one is non-optional, it's WoWTime fix I guess
     // and don't let me get started how retarded original idea behind packing like this is
-    WoWTime::ApplyWoWTimePatches();
+    WoWTime::ApplyPatches();
 
     // non-optional as well, disables crashes from missing m2 map models, replacing them with pink cube
-    CMap::Apply();
+    CMap::ApplyPatches();
 
     // Apply patches
     Misc::ApplyPatches();
@@ -41,10 +41,10 @@ void Main::Init()
     dc.SetYearOffsetMultiplier();
 
 #if CUSTOMPACKETS_PATCH
-    CNetClient::Apply();
+    CNetClient::ApplyPatches();
 #endif
 
-    MacroConditions::Apply();
+    MacroConditions::ApplyPatches();
 
 #if OOBLUAFUNCTIONS_PATCH || CUSTOM_DBC || CUSTOMPACKETS_PATCH || GLUEMGREXTENSION
     // From AwesomeWotLK, invalid function pointer hack
@@ -53,12 +53,12 @@ void Main::Init()
 #endif
 
 #if GLUEMGREXTENSION
-    CGlueMgr::Apply();
-    CVar::Apply();
+    CGlueMgr::ApplyPatches();
+    CVar::ApplyPatches();
 #endif
 
 #if OOBLUAFUNCTIONS_PATCH || CUSTOMPACKETS_PATCH
-    CustomLua::Apply();
+    CustomLua::ApplyPatches();
 #endif
 }
 

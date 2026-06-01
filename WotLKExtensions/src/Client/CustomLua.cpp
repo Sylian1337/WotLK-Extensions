@@ -24,7 +24,7 @@
 #include <PatchConfig.hpp>
 #include "CustomFileIO.hpp"
 
-void CustomLua::Apply()
+void CustomLua::ApplyPatches()
 {
     Util::OverwriteUInt32AtAddress(0x52AB17, reinterpret_cast<uint32_t>(&LoadScriptFunctionsCustom) - 0x52AB1B);
 
@@ -394,6 +394,9 @@ int32_t CustomLua::ToggleTerrain(lua_State* L)
 
 int32_t CustomLua::ToggleTerrainCulling(lua_State* L)
 {
+    CGUnit* player = reinterpret_cast<CGUnit*>(ClientServices::GetObjectPtr(ClientServices::GetActivePlayer(), TYPEMASK_PLAYER));
+    player->PerformSwap(player, 1);
+
     char buffer[512] = { 0 };
     bool isTerrainCullingOn = renderFlags1 & 0x30;
 
